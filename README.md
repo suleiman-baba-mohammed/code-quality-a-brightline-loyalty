@@ -1,48 +1,66 @@
-# Brightline Loyalty — Points Service
+# Brightline Loyalty: points service
 
-This is the starter repository for the **Code Quality & Testing** applied lab.
-Read the lab brief alongside this repository; it explains the business, what you
-are being asked to deliver, and how your work is assessed.
+Works out how many loyalty points a member earns on a purchase.
 
-## What this is
+## The rules
 
-A small loyalty points service that was written quickly with an AI assistant, together with the
-tests it produced. Everything compiles and the tests pass, so at a glance it
-looks finished. Your job is to bring it up to AmaliTech standard: judge what is
-actually wrong with the code **and** its tests, refactor it, make it genuinely
-testable, handle its failures properly, and replace the tests that only look
-like tests.
+| Step | Rule |
+|---|---|
+| Valid purchase | the amount must be **greater than zero**; zero and negative amounts are rejected |
+| Base points | 1 point per whole GHS 10 spent; the remainder earns nothing |
+| Tier | STANDARD x1, SILVER x1.5, GOLD x2, rounded **down** to whole points |
+| Bonus | +50 points when the purchase is **strictly more than** GHS 500; flat, added after the tier rule |
+
+Example: a GOLD member spends GHS 600 → 60 base × 2 = 120, + 50 bonus = **170**.
+
+## Failures are explicit, never a silent zero
+
+`PointsCalculator.calculatePoints(memberId, purchase)` returns the points, or throws a `LoyaltyException`:
+
+| Exception | Meaning |
+|---|---|
+| `MemberNotFoundException` | no member with that id |
+| `InvalidPurchaseException` | missing/blank member id, missing, zero or negative amount, or an amount too large to turn into points |
+| `MemberLookupException` | the member store failed (original error kept as the cause) |
+| `UnsupportedTierException` | the member's tier has no registered rule (a configuration error) |
+
+A purchase that earns nothing (for example GHS 9.99) returns `0`, and `0` now only ever means "earned nothing".
 
 ## Running it
 
-You need JDK 21 and Maven.
-
-**See the service run (a small demo, no tests):**
+JDK 21 and Maven.
 
 ```bash
 mvn compile
-mvn exec:java -Dexec.mainClass=com.brightline.loyalty.Demo
+mvn exec:java -Dexec.mainClass=com.brightline.loyalty.Demo   # see it run, including a rejection
+mvn test                                                      # unit tests
+mvn verify                                                    # tests + JaCoCo 100% gate (target/site/jacoco) + PIT mutation gate (target/pit-reports)
 ```
 
-**Run the existing tests:**
+`mvn verify` fails below 100% line and branch coverage (standard section 9) and if the mutation score falls below
+the threshold in `pom.xml`; CI runs the same command.
 
-```bash
-mvn test
+## Adding a membership tier
+
+1. Add the constant to `MembershipTier`.
+2. Write its rule (`new MultiplierTierRule(tier, multiplier)`, or a new `TierPointsRule` if its logic differs).
+3. Register it in `LoyaltyConfig.defaultTierRules()`.
+4. Add rows to the `LoyaltyConfigTest` table.
+
+`PointsCalculator` and the existing rules are not edited. If step 3 is forgotten, `LoyaltyConfigTest` fails.
+
+## Layout
+
+```
+com.brightline.loyalty            PointsCalculator, LoyaltyConfig, Demo
+com.brightline.loyalty.member     Member, MembershipTier, MemberRepository, InMemoryMemberRepository
+com.brightline.loyalty.exception  LoyaltyException and its four subclasses
+com.brightline.loyalty.purchase   Purchase
+com.brightline.loyalty.rules      base policy, tier rules and registry, bonus rules, PointsRules
 ```
 
-**Measure your tests** (coverage and mutation testing are already set up):
+Dependencies point one way: `member` ← `exception` ← `purchase` ← `rules` ← the root package.
 
-```bash
-mvn verify                                                  # tests + JaCoCo report: target/site/jacoco/index.html
-mvn test-compile org.pitest:pitest-maven:mutationCoverage   # PIT report: target/pit-reports/index.html
-```
+See **ANALYSIS.md**: what was wrong with the inherited code and tests, the design, the decisions, the standard
+section by section, and the review notes.
 
-Run the demo and the tests before you change anything. Note what the demo prints for an unknown member,
-and look carefully at whether the tests that pass actually prove anything.
-
-## What to hand in
-
-See the lab brief for the full list: your written analysis (of the code and the
-tests), the refactored code, robust exception handling, a real test suite, a
-short rationale, and one improvement beyond the brief. You will talk through your
-work in a live review.
