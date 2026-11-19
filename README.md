@@ -66,3 +66,13 @@ Dependencies point one way: `member` ← `exception` ← `purchase` ← `rules` 
 See **ANALYSIS.md**: what was wrong with the inherited code and tests, the design, the decisions, the standard
 section by section, and the review notes.
 
+
+## Scope notes
+
+- **Logging.** The service has no logging. Failures are raised as `LoyaltyException` subclasses that keep their
+  cause, and the caller decides what to record. If this becomes a running service, add SLF4J and log the cause where
+  `PointsCalculator` wraps a store failure.
+- **Configuration.** The scheme numbers (multipliers, bonus threshold and points) are constants in `LoyaltyConfig`,
+  the one composition root. They are not read from a properties file; that is the next step if the business needs to
+  change them without a release.
+
