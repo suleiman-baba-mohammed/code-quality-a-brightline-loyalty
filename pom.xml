@@ -133,7 +133,7 @@
           </targetTests>
           <!-- Safety net: the build FAILS if fewer than this share of the planted
                mutants are caught by the tests. Raise it as the suite improves. -->
-          <mutationThreshold>80</mutationThreshold>
+          <mutationThreshold>90</mutationThreshold>
           <timestampedReports>false</timestampedReports>
         </configuration>
         <executions>

@@ -126,7 +126,8 @@ Because T1 and T3 *do* execute the STANDARD and SILVER lines, a coverage report 
 2. Inject the repository through the constructor, with a single composition root.
 3. Replace the string `if` chain with a `MembershipTier` enum and one rule object per tier.
 4. Extract base-points and bonus rules, use `BigDecimal` for money.
-5. Custom exceptions, `Optional` repository, validation, logging; remove the swallow. This is a deliberate behaviour change.
+5. Custom exceptions, `Optional` repository, validation; remove the swallow (no logging inside the calculator, see Decisions). This is a deliberate behaviour change.
+
 6. Replace the three hollow tests with a real JUnit 5 + Mockito suite.
 7. Improvement: enforce the safety net in the build (mutation threshold, style check, CI).
 8. Write the Decisions section.
@@ -263,7 +264,7 @@ the bonus is flat and is not multiplied by the tier (confirmed by the business).
   always empty, blank-id check in `Member` removed, …). All 32 failed at least one test (the last sweep ran against the final code).
 * **Mutation gate.** `mvn verify` now runs PIT with a threshold of 80.
 
-> **PIT score on my machine: 95 %.**
+> **PIT score on my machine: 100%.**
 
 ## 6. The one improvement beyond the brief
 
