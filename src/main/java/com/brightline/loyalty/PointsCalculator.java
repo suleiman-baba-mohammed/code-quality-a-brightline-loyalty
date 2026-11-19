@@ -59,6 +59,7 @@ public final class PointsCalculator {
     try {
       return repository.findById(memberId);
     } catch (RuntimeException e) {
+      // Deliberately broad: the store's failure types are unknown here (see MemberRepository).
       throw new MemberLookupException(memberId, e);
     }
   }
@@ -69,10 +70,8 @@ public final class PointsCalculator {
       int tierPoints = rules.tierRules().ruleFor(tier).apply(basePoints, purchase);
       return Math.addExact(tierPoints, bonusPointsFor(purchase));
     } catch (ArithmeticException e) {
-      // Contract: rules throw ArithmeticException only when a result does not fit in an int
-      // (see TierPointsRule.apply), so this is always an oversized purchase.
       throw new InvalidPurchaseException(
-          "Points for this purchase cannot be represented as an int; amount: " + purchase.amount(),
+        "Points for this purchase cannot be represented as an int; amount: " + purchase.amount(),
           e);
     }
   }
