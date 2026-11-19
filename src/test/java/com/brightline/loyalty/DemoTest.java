@@ -6,6 +6,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.ResourceLock;
+import org.junit.jupiter.api.parallel.Resources;
+
 
 class DemoTest {
 
@@ -30,6 +33,7 @@ class DemoTest {
   }
 
   @Test
+  @ResourceLock(Resources.SYSTEM_OUT)
   void mainRunsTheDemoOnTheConsole() {
     PrintStream console = System.out;
     System.setOut(out);
