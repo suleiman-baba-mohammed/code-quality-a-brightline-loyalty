@@ -53,4 +53,18 @@ class LargePurchaseBonusRuleTest {
     assertThrows(
       IllegalArgumentException.class, () -> new LargePurchaseBonusRule(BigDecimal.TEN, -1));
   }
+
+  @Test
+  void acceptsAZeroThreshold() {
+    LargePurchaseBonusRule rule = new LargePurchaseBonusRule(BigDecimal.ZERO, 7);
+
+    assertEquals(7, rule.bonusFor(new Purchase(new BigDecimal("0.01"))));
+  }
+
+  @Test
+  void acceptsZeroBonusPoints() {
+    LargePurchaseBonusRule rule = new LargePurchaseBonusRule(BigDecimal.TEN, 0);
+
+    assertEquals(0, rule.bonusFor(new Purchase(new BigDecimal("11"))));
+  }
 }

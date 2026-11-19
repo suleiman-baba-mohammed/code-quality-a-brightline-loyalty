@@ -54,4 +54,9 @@ class InMemoryMemberRepositoryTest {
 
     assertTrue(e.getMessage().contains("a1"), e.getMessage());
   }
+
+  @Test
+  void refusesAMissingMemberList() {
+    assertThrows(NullPointerException.class, () -> new InMemoryMemberRepository(null));
+  }
 }
