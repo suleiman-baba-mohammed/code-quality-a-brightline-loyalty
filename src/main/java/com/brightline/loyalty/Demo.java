@@ -41,5 +41,7 @@ public final class Demo {
     }
   }
 
+  /** One demo case: a label for the output, the member id and the purchase amount as text. */
   private record Scenario(String label, String memberId, String amount) {}
+
 }
