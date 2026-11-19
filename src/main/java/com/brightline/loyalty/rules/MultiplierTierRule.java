@@ -1,6 +1,7 @@
 package com.brightline.loyalty.rules;
 
 import com.brightline.loyalty.member.MembershipTier;
+import com.brightline.loyalty.purchase.Purchase;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Objects;
@@ -30,8 +31,9 @@ public final class MultiplierTierRule implements TierPointsRule {
     return tier;
   }
 
+  /** Multiplies the base points; the purchase is not needed by a plain multiplier. */
   @Override
-  public int apply(int basePoints) {
+  public int apply(int basePoints, Purchase purchase) {
     return BigDecimal.valueOf(basePoints)
       .multiply(multiplier)
       .setScale(0, RoundingMode.DOWN)

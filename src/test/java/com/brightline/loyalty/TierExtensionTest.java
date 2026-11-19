@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Proves the design absorbs the coming change. The business is adding a tier with its own points
- * rules. This test writes such a rule, which is NOT a simple multiplier, and plugs it in without
+ * rules. These tests write such rules, which are NOT simple multipliers, and plug them in without
  * touching {@link PointsCalculator}, {@link TierRuleRegistry} or any existing rule.
  */
 class TierExtensionTest {
@@ -31,8 +31,24 @@ class TierExtensionTest {
     }
 
     @Override
-    public int apply(int basePoints) {
+    public int apply(int basePoints, Purchase purchase) {
       return basePoints + 5;
+    }
+  }
+
+  /** A made-up tier rule that depends on the purchase: double points above GHS 200. */
+  private static final class DoubleAboveTwoHundredRule implements TierPointsRule {
+
+    private static final BigDecimal LIMIT = new BigDecimal("200");
+
+    @Override
+    public MembershipTier tier() {
+      return MembershipTier.GOLD;
+    }
+
+    @Override
+    public int apply(int basePoints, Purchase purchase) {
+      return purchase.amount().compareTo(LIMIT) > 0 ? basePoints * 2 : basePoints;
     }
   }
 
@@ -61,6 +77,20 @@ class TierExtensionTest {
 
     // 60 base + 5 flat from the new rule + 50 bonus
     assertEquals(115, calculator.calculatePoints("m2", new Purchase(new BigDecimal("600"))));
+  }
+
+  @Test
+  void aTierRuleCanDependOnThePurchaseAmount() {
+    PointsCalculator calculator = calculatorWith(new DoubleAboveTwoHundredRule());
+
+    assertEquals(50, calculator.calculatePoints("m2", new Purchase(new BigDecimal("250"))));
+  }
+
+  @Test
+  void aPurchaseDependentRuleDoesNotApplyBelowItsLimit() {
+    PointsCalculator calculator = calculatorWith(new DoubleAboveTwoHundredRule());
+
+    assertEquals(10, calculator.calculatePoints("m2", new Purchase(new BigDecimal("100"))));
   }
 
   @Test

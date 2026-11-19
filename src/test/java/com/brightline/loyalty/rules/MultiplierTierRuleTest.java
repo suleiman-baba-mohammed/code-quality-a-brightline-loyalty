@@ -5,12 +5,14 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.brightline.loyalty.member.MembershipTier;
+import com.brightline.loyalty.purchase.Purchase;
 import java.math.BigDecimal;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 class MultiplierTierRuleTest {
+  private static final Purchase PURCHASE = new Purchase(BigDecimal.TEN);
 
   @Test
   void reportsTheTierItBelongsTo() {
@@ -35,14 +37,14 @@ class MultiplierTierRuleTest {
   void multipliesAndRoundsDownToWholePoints(BigDecimal multiplier, int base, int expected) {
     MultiplierTierRule rule = new MultiplierTierRule(MembershipTier.GOLD, multiplier);
 
-    assertEquals(expected, rule.apply(base));
+    assertEquals(expected, rule.apply(base, PURCHASE));
   }
 
   @Test
   void refusesAResultThatDoesNotFitInAnInt() {
     MultiplierTierRule rule = new MultiplierTierRule(MembershipTier.GOLD, new BigDecimal("2"));
 
-    assertThrows(ArithmeticException.class, () -> rule.apply(Integer.MAX_VALUE));
+    assertThrows(ArithmeticException.class, () -> rule.apply(Integer.MAX_VALUE, PURCHASE));
   }
 
   @Test

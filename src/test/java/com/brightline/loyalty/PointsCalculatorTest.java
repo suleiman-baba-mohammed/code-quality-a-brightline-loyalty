@@ -67,7 +67,7 @@ class PointsCalculatorTest {
   void awardsTheTierPointsPlusEveryBonus() {
     when(repository.findById(ID)).thenReturn(Optional.of(gold));
     when(basePolicy.basePointsFor(purchase)).thenReturn(7);
-    when(goldRule.apply(7)).thenReturn(20); // the tier rule receives the BASE points
+    when(goldRule.apply(7, purchase)).thenReturn(20); // the tier rule receives the BASE points
     when(bonusA.bonusFor(purchase)).thenReturn(5);
     when(bonusB.bonusFor(purchase)).thenReturn(3);
 
@@ -78,7 +78,7 @@ class PointsCalculatorTest {
   void bonusIsAddedAfterTheTierRuleNotMultipliedByIt() {
     when(repository.findById(ID)).thenReturn(Optional.of(gold));
     when(basePolicy.basePointsFor(purchase)).thenReturn(10);
-    when(goldRule.apply(10)).thenReturn(20);
+    when(goldRule.apply(10, purchase)).thenReturn(20);
     when(bonusA.bonusFor(purchase)).thenReturn(50);
 
     assertEquals(70, calculatorWith(bonusA).calculatePoints(ID, purchase));
@@ -88,7 +88,7 @@ class PointsCalculatorTest {
   void withNoBonusRulesTheResultIsJustTheTierPoints() {
     when(repository.findById(ID)).thenReturn(Optional.of(gold));
     when(basePolicy.basePointsFor(purchase)).thenReturn(4);
-    when(goldRule.apply(4)).thenReturn(8);
+    when(goldRule.apply(4, purchase)).thenReturn(8);
 
     assertEquals(8, calculatorWith().calculatePoints(ID, purchase));
   }
@@ -97,7 +97,7 @@ class PointsCalculatorTest {
   void aPurchaseThatEarnsNothingReturnsZeroNotAnError() {
     when(repository.findById(ID)).thenReturn(Optional.of(gold));
     when(basePolicy.basePointsFor(purchase)).thenReturn(0);
-    when(goldRule.apply(0)).thenReturn(0);
+    when(goldRule.apply(0, purchase)).thenReturn(0);
 
     assertEquals(0, calculatorWith().calculatePoints(ID, purchase));
   }
@@ -146,7 +146,7 @@ class PointsCalculatorTest {
   void additionOverflowIsReportedAsAnInvalidPurchaseWithTheArithmeticCause() {
     when(repository.findById(ID)).thenReturn(Optional.of(gold));
     when(basePolicy.basePointsFor(purchase)).thenReturn(1);
-    when(goldRule.apply(1)).thenReturn(Integer.MAX_VALUE);
+    when(goldRule.apply(1, purchase)).thenReturn(Integer.MAX_VALUE);
     when(bonusA.bonusFor(purchase)).thenReturn(1);
 
     InvalidPurchaseException e =
@@ -162,7 +162,7 @@ class PointsCalculatorTest {
   void bonusesThatOverflowWhenAddedTogetherAreAnInvalidPurchase() {
     when(repository.findById(ID)).thenReturn(Optional.of(gold));
     when(basePolicy.basePointsFor(purchase)).thenReturn(1);
-    when(goldRule.apply(1)).thenReturn(0);
+    when(goldRule.apply(1, purchase)).thenReturn(0);
     when(bonusA.bonusFor(purchase)).thenReturn(Integer.MAX_VALUE);
     when(bonusB.bonusFor(purchase)).thenReturn(1);
 

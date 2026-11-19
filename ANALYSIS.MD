@@ -226,9 +226,9 @@ merely possible:
   at runtime the same mistake is an `UnsupportedTierException`, never a silent zero.
 
 *Honest limits.* Step 1 and 3 are one-line edits to existing files; that is data and wiring, not logic, but it is not
-literally zero edits. And `TierPointsRule.apply(int basePoints)` sees only the base points. If the new tier needs a rule
-based on the purchase itself (say, "double points on purchases over GHS 200"), the interface would need to widen to
-receive the `Purchase`. I did not do that speculatively; it would be a small, compiler-guided change.
+literally zero edits. `TierPointsRule.apply` receives both the base points and the `Purchase`, so a new tier whose rule
+depends on the purchase itself (for example "double points above GHS 200") needs no interface change; `TierExtensionTest`
+proves this with a rule that is not a multiplier and one that reads the purchase amount.
 
 ## 4. What I kept, fixed or rewrote from the AI
 

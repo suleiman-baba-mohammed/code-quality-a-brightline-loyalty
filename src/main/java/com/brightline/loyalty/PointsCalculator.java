@@ -65,7 +65,7 @@ public class PointsCalculator {
   private int pointsFor(MembershipTier tier, Purchase purchase) {
     try {
       int basePoints = rules.basePolicy().basePointsFor(purchase);
-      int tierPoints = rules.tierRules().ruleFor(tier).apply(basePoints);
+      int tierPoints = rules.tierRules().ruleFor(tier).apply(basePoints, purchase);
       return Math.addExact(tierPoints, bonusPointsFor(purchase));
     } catch (ArithmeticException e) {
       throw new InvalidPurchaseException(
