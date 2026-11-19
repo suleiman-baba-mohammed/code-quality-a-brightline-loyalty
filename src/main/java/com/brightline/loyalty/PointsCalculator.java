@@ -16,7 +16,7 @@ import java.util.Optional;
  * Works out the points a member earns on a purchase. It only orchestrates: the member store, the
  * base-points policy, the tier rules and the bonus rules are all injected collaborators.
  */
-public class PointsCalculator {
+public final class PointsCalculator {
 
   private final MemberRepository repository;
   private final PointsRules rules;
@@ -33,8 +33,8 @@ public class PointsCalculator {
    * @param memberId the member's id
    * @param purchase the purchase
    * @return the points earned: the tier points plus every bonus, never negative
-   * @throws InvalidPurchaseException if the id or purchase is missing, or the amount is too large
-   *     to turn into points
+   * @throws InvalidPurchaseException if the id or purchase is missing, or the points for the
+   *     purchase do not fit in an int
    * @throws MemberNotFoundException if there is no member with that id
    * @throws MemberLookupException if the member store failed
    * @throws UnsupportedTierException if the member's tier has no registered rule
@@ -68,8 +68,11 @@ public class PointsCalculator {
       int tierPoints = rules.tierRules().ruleFor(tier).apply(basePoints, purchase);
       return Math.addExact(tierPoints, bonusPointsFor(purchase));
     } catch (ArithmeticException e) {
+      // Contract: rules throw ArithmeticException only when a result does not fit in an int
+      // (see TierPointsRule.apply), so this is always an oversized purchase.
       throw new InvalidPurchaseException(
-        "Purchase amount is too large to convert to points: " + purchase.amount(), e);
+        "Points for this purchase cannot be represented as an int; amount: " + purchase.amount(),
+        e);
     }
   }
 
