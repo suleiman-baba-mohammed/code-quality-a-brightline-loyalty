@@ -34,7 +34,8 @@ public final class PointsCalculator {
    * @param purchase the purchase
    * @return the points earned: the tier points plus every bonus, never negative
    * @throws InvalidPurchaseException if the id or purchase is missing, or the points for the
-   *     purchase do not fit in an int
+   *     purchase do not fit in an int (the rules signal this with an {@link ArithmeticException},
+   *     see {@code TierPointsRule.apply}; it is kept as the cause)
    * @throws MemberNotFoundException if there is no member with that id
    * @throws MemberLookupException if the member store failed
    * @throws UnsupportedTierException if the member's tier has no registered rule

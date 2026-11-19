@@ -16,6 +16,13 @@ public interface TierPointsRule {
    * Turns the base points earned from spend into the points this tier awards. The purchase is
    * passed so a tier can have rules that depend on it (for example, a higher multiplier above a
    * certain amount).
+   *
+   * @param basePoints points earned from the purchase amount alone, never negative
+   * @param purchase the purchase being rewarded
+   * @return the points awarded for this tier, before any purchase bonus
+   * @throws ArithmeticException only when the result does not fit in an {@code int}; the calculator
+   *     reports this as an oversized purchase, so implementations must not throw it for any other
+   *     reason
    */
   int apply(int basePoints, Purchase purchase);
 }
