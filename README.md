@@ -34,7 +34,9 @@ JDK 21 and Maven.
 mvn compile
 mvn exec:java -Dexec.mainClass=com.brightline.loyalty.Demo   # see it run, including a rejection
 mvn test                                                      # unit tests
-mvn verify                                                    # tests + JaCoCo 100% gate (target/site/jacoco) + PIT mutation gate (target/pit-reports)
+mvn spotless:apply                                            # auto-format to Google Java Style
+mvn verify                                                    # style check + tests + JaCoCo 100% gate (target/site/jacoco) + PIT mutation gate (target/pit-reports)
+
 ```
 
 `mvn verify` fails below 100% line and branch coverage (standard section 9) and if the mutation score falls below

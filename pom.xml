@@ -146,6 +146,31 @@
           </execution>
         </executions>
       </plugin>
+
+      <!-- Style: Google Java Style (standard section on formatting).
+           mvn spotless:apply fixes files; mvn verify fails if any file is not formatted. -->
+      <plugin>
+        <groupId>com.diffplug.spotless</groupId>
+        <artifactId>spotless-maven-plugin</artifactId>
+        <version>2.43.0</version>
+        <configuration>
+          <java>
+            <googleJavaFormat>
+              <version>1.28.0</version>
+            </googleJavaFormat>
+          </java>
+        </configuration>
+        <executions>
+          <execution>
+            <id>style-gate</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 </project>
+

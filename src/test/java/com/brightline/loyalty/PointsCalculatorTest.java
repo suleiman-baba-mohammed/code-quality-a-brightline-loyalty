@@ -60,7 +60,7 @@ class PointsCalculatorTest {
 
   private PointsCalculator calculatorWith(BonusRule... bonuses) {
     return new PointsCalculator(
-      repository, new PointsRules(basePolicy, registry, List.of(bonuses)));
+        repository, new PointsRules(basePolicy, registry, List.of(bonuses)));
   }
 
   @Test
@@ -107,9 +107,9 @@ class PointsCalculatorTest {
     when(repository.findById("ghost")).thenReturn(Optional.empty());
 
     MemberNotFoundException e =
-      assertThrows(
-        MemberNotFoundException.class,
-        () -> calculatorWith().calculatePoints("ghost", purchase));
+        assertThrows(
+            MemberNotFoundException.class,
+            () -> calculatorWith().calculatePoints("ghost", purchase));
 
     assertEquals("ghost", e.getMemberId());
     assertEquals("Member not found: ghost", e.getMessage());
@@ -121,8 +121,8 @@ class PointsCalculatorTest {
     when(repository.findById(ID)).thenThrow(outage);
 
     MemberLookupException e =
-      assertThrows(
-        MemberLookupException.class, () -> calculatorWith().calculatePoints(ID, purchase));
+        assertThrows(
+            MemberLookupException.class, () -> calculatorWith().calculatePoints(ID, purchase));
 
     assertSame(outage, e.getCause());
     assertTrue(e.getMessage().contains(ID), e.getMessage());
@@ -135,9 +135,8 @@ class PointsCalculatorTest {
     when(basePolicy.basePointsFor(purchase)).thenReturn(5);
 
     UnsupportedTierException e =
-      assertThrows(
-        UnsupportedTierException.class,
-        () -> calculatorWith().calculatePoints("s1", purchase));
+        assertThrows(
+            UnsupportedTierException.class, () -> calculatorWith().calculatePoints("s1", purchase));
 
     assertEquals(MembershipTier.SILVER, e.getTier());
   }
@@ -150,9 +149,9 @@ class PointsCalculatorTest {
     when(bonusA.bonusFor(purchase)).thenReturn(1);
 
     InvalidPurchaseException e =
-      assertThrows(
-        InvalidPurchaseException.class,
-        () -> calculatorWith(bonusA).calculatePoints(ID, purchase));
+        assertThrows(
+            InvalidPurchaseException.class,
+            () -> calculatorWith(bonusA).calculatePoints(ID, purchase));
 
     assertInstanceOf(ArithmeticException.class, e.getCause());
     assertTrue(e.getMessage().contains("123.45"), e.getMessage());
@@ -167,8 +166,8 @@ class PointsCalculatorTest {
     when(bonusB.bonusFor(purchase)).thenReturn(1);
 
     assertThrows(
-      InvalidPurchaseException.class,
-      () -> calculatorWith(bonusA, bonusB).calculatePoints(ID, purchase));
+        InvalidPurchaseException.class,
+        () -> calculatorWith(bonusA, bonusB).calculatePoints(ID, purchase));
   }
 
   @Test
@@ -178,8 +177,8 @@ class PointsCalculatorTest {
     when(basePolicy.basePointsFor(purchase)).thenThrow(overflow);
 
     InvalidPurchaseException e =
-      assertThrows(
-        InvalidPurchaseException.class, () -> calculatorWith().calculatePoints(ID, purchase));
+        assertThrows(
+            InvalidPurchaseException.class, () -> calculatorWith().calculatePoints(ID, purchase));
 
     assertSame(overflow, e.getCause());
   }
@@ -187,8 +186,8 @@ class PointsCalculatorTest {
   @Test
   void aNullMemberIdIsRejectedWithoutTouchingTheStore() {
     InvalidPurchaseException e =
-      assertThrows(
-        InvalidPurchaseException.class, () -> calculatorWith().calculatePoints(null, purchase));
+        assertThrows(
+            InvalidPurchaseException.class, () -> calculatorWith().calculatePoints(null, purchase));
 
     assertEquals("Member id is required", e.getMessage());
     verifyNoInteractions(repository);
@@ -198,7 +197,7 @@ class PointsCalculatorTest {
   @ValueSource(strings = {"", " ", "\t"})
   void aBlankMemberIdIsRejectedWithoutTouchingTheStore(String blank) {
     assertThrows(
-      InvalidPurchaseException.class, () -> calculatorWith().calculatePoints(blank, purchase));
+        InvalidPurchaseException.class, () -> calculatorWith().calculatePoints(blank, purchase));
 
     verifyNoInteractions(repository);
   }
@@ -206,8 +205,8 @@ class PointsCalculatorTest {
   @Test
   void aNullPurchaseIsRejectedWithoutTouchingTheStore() {
     InvalidPurchaseException e =
-      assertThrows(
-        InvalidPurchaseException.class, () -> calculatorWith().calculatePoints(ID, null));
+        assertThrows(
+            InvalidPurchaseException.class, () -> calculatorWith().calculatePoints(ID, null));
 
     assertEquals("Purchase is required", e.getMessage());
     verifyNoInteractions(repository);

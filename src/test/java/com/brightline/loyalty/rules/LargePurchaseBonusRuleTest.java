@@ -44,14 +44,13 @@ class LargePurchaseBonusRuleTest {
   @Test
   void rejectsANegativeThreshold() {
     assertThrows(
-      IllegalArgumentException.class,
-      () -> new LargePurchaseBonusRule(new BigDecimal("-1"), 50));
+        IllegalArgumentException.class, () -> new LargePurchaseBonusRule(new BigDecimal("-1"), 50));
   }
 
   @Test
   void rejectsNegativeBonusPoints() {
     assertThrows(
-      IllegalArgumentException.class, () -> new LargePurchaseBonusRule(BigDecimal.TEN, -1));
+        IllegalArgumentException.class, () -> new LargePurchaseBonusRule(BigDecimal.TEN, -1));
   }
 
   @Test

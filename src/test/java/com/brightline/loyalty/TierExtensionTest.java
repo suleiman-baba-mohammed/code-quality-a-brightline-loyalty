@@ -57,10 +57,10 @@ class TierExtensionTest {
     rules.removeIf(rule -> rule.tier() == MembershipTier.GOLD);
     rules.add(goldRule);
     PointsRules pointsRules =
-      new PointsRules(
-        new SpendBasedBasePointsPolicy(),
-        new TierRuleRegistry(rules),
-        config.defaultBonusRules());
+        new PointsRules(
+            new SpendBasedBasePointsPolicy(),
+            new TierRuleRegistry(rules),
+            config.defaultBonusRules());
     return new PointsCalculator(config.sampleMemberRepository(), pointsRules);
   }
 

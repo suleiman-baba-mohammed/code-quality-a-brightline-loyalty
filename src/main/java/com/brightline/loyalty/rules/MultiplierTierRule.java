@@ -35,8 +35,8 @@ public final class MultiplierTierRule implements TierPointsRule {
   @Override
   public int apply(int basePoints, Purchase purchase) {
     return BigDecimal.valueOf(basePoints)
-      .multiply(multiplier)
-      .setScale(0, RoundingMode.DOWN)
-      .intValueExact();
+        .multiply(multiplier)
+        .setScale(0, RoundingMode.DOWN)
+        .intValueExact();
   }
 }

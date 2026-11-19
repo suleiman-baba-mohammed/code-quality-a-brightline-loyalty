@@ -17,8 +17,8 @@ class MultiplierTierRuleTest {
   @Test
   void reportsTheTierItBelongsTo() {
     assertEquals(
-      MembershipTier.SILVER,
-      new MultiplierTierRule(MembershipTier.SILVER, BigDecimal.ONE).tier());
+        MembershipTier.SILVER,
+        new MultiplierTierRule(MembershipTier.SILVER, BigDecimal.ONE).tier());
   }
 
   @ParameterizedTest
@@ -55,15 +55,15 @@ class MultiplierTierRuleTest {
   @Test
   void rejectsANullMultiplier() {
     assertThrows(
-      NullPointerException.class, () -> new MultiplierTierRule(MembershipTier.GOLD, null));
+        NullPointerException.class, () -> new MultiplierTierRule(MembershipTier.GOLD, null));
   }
 
   @Test
   void rejectsANegativeMultiplier() {
     IllegalArgumentException e =
-      assertThrows(
-        IllegalArgumentException.class,
-        () -> new MultiplierTierRule(MembershipTier.GOLD, new BigDecimal("-1")));
+        assertThrows(
+            IllegalArgumentException.class,
+            () -> new MultiplierTierRule(MembershipTier.GOLD, new BigDecimal("-1")));
 
     assertTrue(e.getMessage().contains("-1"), e.getMessage());
   }

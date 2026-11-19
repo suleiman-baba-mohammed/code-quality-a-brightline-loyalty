@@ -12,7 +12,7 @@ import java.util.Objects;
  * @param bonusRules extra points that do not depend on the tier; may be empty
  */
 public record PointsRules(
-  BasePointsPolicy basePolicy, TierRuleLookup tierRules, List<BonusRule> bonusRules) {
+    BasePointsPolicy basePolicy, TierRuleLookup tierRules, List<BonusRule> bonusRules) {
 
   /** Rejects missing rules and copies the bonus list. */
   public PointsRules {

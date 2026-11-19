@@ -15,15 +15,15 @@ class MemberTest {
     Member member = new Member("m9", "Efua Asante", MembershipTier.SILVER);
 
     assertAll(
-      () -> assertEquals("m9", member.id()),
-      () -> assertEquals("Efua Asante", member.name()),
-      () -> assertEquals(MembershipTier.SILVER, member.tier()));
+        () -> assertEquals("m9", member.id()),
+        () -> assertEquals("Efua Asante", member.name()),
+        () -> assertEquals(MembershipTier.SILVER, member.tier()));
   }
 
   @Test
   void rejectsANullId() {
     assertThrows(
-      IllegalArgumentException.class, () -> new Member(null, "Efua", MembershipTier.GOLD));
+        IllegalArgumentException.class, () -> new Member(null, "Efua", MembershipTier.GOLD));
   }
 
   @ParameterizedTest

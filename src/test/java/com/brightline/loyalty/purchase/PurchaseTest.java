@@ -21,7 +21,7 @@ class PurchaseTest {
   @Test
   void rejectsAMissingAmount() {
     InvalidPurchaseException e =
-      assertThrows(InvalidPurchaseException.class, () -> new Purchase(null));
+        assertThrows(InvalidPurchaseException.class, () -> new Purchase(null));
 
     assertEquals("Purchase amount is required", e.getMessage());
   }
@@ -30,7 +30,7 @@ class PurchaseTest {
   @CsvSource({"0", "0.00", "-0.01", "-5", "-100.00"})
   void rejectsAZeroOrNegativeAmountAndSaysWhichOne(BigDecimal amount) {
     InvalidPurchaseException e =
-      assertThrows(InvalidPurchaseException.class, () -> new Purchase(amount));
+        assertThrows(InvalidPurchaseException.class, () -> new Purchase(amount));
 
     assertTrue(e.getMessage().contains(amount.toString()), e.getMessage());
   }

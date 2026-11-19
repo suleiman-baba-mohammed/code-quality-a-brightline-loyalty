@@ -15,17 +15,17 @@ import org.junit.jupiter.api.Test;
 class TierRuleRegistryTest {
 
   private final TierPointsRule silver =
-    new MultiplierTierRule(MembershipTier.SILVER, new BigDecimal("1.5"));
+      new MultiplierTierRule(MembershipTier.SILVER, new BigDecimal("1.5"));
   private final TierPointsRule gold =
-    new MultiplierTierRule(MembershipTier.GOLD, new BigDecimal("2"));
+      new MultiplierTierRule(MembershipTier.GOLD, new BigDecimal("2"));
 
   @Test
   void returnsTheRegisteredRuleForEachTier() {
     TierRuleRegistry registry = new TierRuleRegistry(List.of(silver, gold));
 
     assertAll(
-      () -> assertSame(silver, registry.ruleFor(MembershipTier.SILVER)),
-      () -> assertSame(gold, registry.ruleFor(MembershipTier.GOLD)));
+        () -> assertSame(silver, registry.ruleFor(MembershipTier.SILVER)),
+        () -> assertSame(gold, registry.ruleFor(MembershipTier.GOLD)));
   }
 
   @Test
@@ -33,8 +33,8 @@ class TierRuleRegistryTest {
     TierRuleRegistry registry = new TierRuleRegistry(List.of(silver));
 
     UnsupportedTierException e =
-      assertThrows(
-        UnsupportedTierException.class, () -> registry.ruleFor(MembershipTier.STANDARD));
+        assertThrows(
+            UnsupportedTierException.class, () -> registry.ruleFor(MembershipTier.STANDARD));
 
     assertEquals(MembershipTier.STANDARD, e.getTier());
   }
@@ -52,7 +52,7 @@ class TierRuleRegistryTest {
     List<TierPointsRule> rules = List.of(gold, anotherGold);
 
     IllegalArgumentException e =
-      assertThrows(IllegalArgumentException.class, () -> new TierRuleRegistry(rules));
+        assertThrows(IllegalArgumentException.class, () -> new TierRuleRegistry(rules));
 
     assertTrue(e.getMessage().contains("GOLD"), e.getMessage());
   }

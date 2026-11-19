@@ -71,14 +71,14 @@ public final class PointsCalculator {
       // Contract: rules throw ArithmeticException only when a result does not fit in an int
       // (see TierPointsRule.apply), so this is always an oversized purchase.
       throw new InvalidPurchaseException(
-        "Points for this purchase cannot be represented as an int; amount: " + purchase.amount(),
-        e);
+          "Points for this purchase cannot be represented as an int; amount: " + purchase.amount(),
+          e);
     }
   }
 
   private int bonusPointsFor(Purchase purchase) {
     return rules.bonusRules().stream()
-      .map(bonus -> bonus.bonusFor(purchase))
-      .reduce(0, Math::addExact);
+        .map(bonus -> bonus.bonusFor(purchase))
+        .reduce(0, Math::addExact);
   }
 }

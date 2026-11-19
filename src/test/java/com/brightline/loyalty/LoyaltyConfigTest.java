@@ -71,7 +71,7 @@ class LoyaltyConfigTest {
   })
   void rejectsAPurchaseWhosePointsCannotBeRepresented(String memberId, String amount) {
     InvalidPurchaseException e =
-      assertThrows(InvalidPurchaseException.class, () -> points(memberId, amount));
+        assertThrows(InvalidPurchaseException.class, () -> points(memberId, amount));
 
     assertEquals(ArithmeticException.class, e.getCause().getClass());
   }
@@ -98,8 +98,8 @@ class LoyaltyConfigTest {
     MemberRepository repository = config.sampleMemberRepository();
 
     assertAll(
-      () -> assertEquals(MembershipTier.STANDARD, repository.findById("m1").orElseThrow().tier()),
-      () -> assertEquals(MembershipTier.GOLD, repository.findById("m2").orElseThrow().tier()),
-      () -> assertEquals(MembershipTier.SILVER, repository.findById("m3").orElseThrow().tier()));
+        () -> assertEquals(MembershipTier.STANDARD, repository.findById("m1").orElseThrow().tier()),
+        () -> assertEquals(MembershipTier.GOLD, repository.findById("m2").orElseThrow().tier()),
+        () -> assertEquals(MembershipTier.SILVER, repository.findById("m3").orElseThrow().tier()));
   }
 }

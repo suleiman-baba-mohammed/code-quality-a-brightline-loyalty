@@ -35,23 +35,23 @@ public final class LoyaltyConfig {
   /** The rules of the scheme: base points, the tier rules and the bonuses. */
   PointsRules defaultRules() {
     return new PointsRules(
-      new SpendBasedBasePointsPolicy(),
-      new TierRuleRegistry(defaultTierRules()),
-      defaultBonusRules());
+        new SpendBasedBasePointsPolicy(),
+        new TierRuleRegistry(defaultTierRules()),
+        defaultBonusRules());
   }
 
   /** The tier rules of the scheme. Add the rule of a new tier here. */
   List<TierPointsRule> defaultTierRules() {
     return List.of(
-      new MultiplierTierRule(MembershipTier.STANDARD, STANDARD_MULTIPLIER),
-      new MultiplierTierRule(MembershipTier.SILVER, SILVER_MULTIPLIER),
-      new MultiplierTierRule(MembershipTier.GOLD, GOLD_MULTIPLIER));
+        new MultiplierTierRule(MembershipTier.STANDARD, STANDARD_MULTIPLIER),
+        new MultiplierTierRule(MembershipTier.SILVER, SILVER_MULTIPLIER),
+        new MultiplierTierRule(MembershipTier.GOLD, GOLD_MULTIPLIER));
   }
 
   /** The purchase bonuses of the scheme. Add a new bonus here. */
   List<BonusRule> defaultBonusRules() {
     return List.of(
-      new LargePurchaseBonusRule(LARGE_PURCHASE_THRESHOLD, LARGE_PURCHASE_BONUS_POINTS));
+        new LargePurchaseBonusRule(LARGE_PURCHASE_THRESHOLD, LARGE_PURCHASE_BONUS_POINTS));
   }
 
   /** The sample members the demo runs against. */
@@ -62,8 +62,8 @@ public final class LoyaltyConfig {
   /** Three sample members, one per tier. */
   List<Member> sampleMembers() {
     return List.of(
-      new Member("m1", "Kofi Mensah", MembershipTier.STANDARD),
-      new Member("m2", "Ama Owusu", MembershipTier.GOLD),
-      new Member("m3", "Yaa Boateng", MembershipTier.SILVER));
+        new Member("m1", "Kofi Mensah", MembershipTier.STANDARD),
+        new Member("m2", "Ama Owusu", MembershipTier.GOLD),
+        new Member("m3", "Yaa Boateng", MembershipTier.SILVER));
   }
 }

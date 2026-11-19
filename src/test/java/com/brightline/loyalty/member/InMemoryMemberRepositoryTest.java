@@ -50,7 +50,7 @@ class InMemoryMemberRepositoryTest {
     List<Member> members = List.of(ama, impostor);
 
     IllegalArgumentException e =
-      assertThrows(IllegalArgumentException.class, () -> new InMemoryMemberRepository(members));
+        assertThrows(IllegalArgumentException.class, () -> new InMemoryMemberRepository(members));
 
     assertTrue(e.getMessage().contains("a1"), e.getMessage());
   }
