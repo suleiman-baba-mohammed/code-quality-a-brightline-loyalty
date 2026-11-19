@@ -71,7 +71,7 @@ public final class PointsCalculator {
       return Math.addExact(tierPoints, bonusPointsFor(purchase));
     } catch (ArithmeticException e) {
       throw new InvalidPurchaseException(
-        "Points for this purchase cannot be represented as an int; amount: " + purchase.amount(),
+          "Points for this purchase cannot be represented as an int; amount: " + purchase.amount(),
           e);
     }
   }

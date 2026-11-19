@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.ResourceLock;
 import org.junit.jupiter.api.parallel.Resources;
 
-
 class DemoTest {
 
   private static final String EXPECTED_OUTPUT =
