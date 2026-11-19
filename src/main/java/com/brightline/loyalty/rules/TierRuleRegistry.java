@@ -6,8 +6,8 @@ import java.util.Collection;
 import java.util.EnumMap;
 import java.util.Map;
 
-/** Finds the {@link TierPointsRule} for a tier. Built once from the rules it is given. */
-public final class TierRuleRegistry {
+/** A {@link TierRuleLookup} built once from the rules it is given. */
+public final class TierRuleRegistry implements TierRuleLookup {
 
   private final Map<MembershipTier, TierPointsRule> rules = new EnumMap<>(MembershipTier.class);
 
@@ -20,11 +20,7 @@ public final class TierRuleRegistry {
     }
   }
 
-  /**
-   * Returns the rule for the tier.
-   *
-   * @throws UnsupportedTierException if no rule is registered for the tier
-   */
+  @Override
   public TierPointsRule ruleFor(MembershipTier tier) {
     TierPointsRule rule = rules.get(tier);
     if (rule == null) {
